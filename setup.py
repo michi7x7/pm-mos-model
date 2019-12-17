@@ -89,7 +89,7 @@ setup(
     author='Michael Sieberer',
     author_email='michael.sieberer@infineon.com',
     description='A cryogenic model for the MOS transistor',
-    install_requires=['numpy>=1.16', 'scipy>=1.2', 'si_prefix>=1.2'],
+    install_requires=['numpy>=1.16', 'scipy>=1.2', 'si_prefix>=1.2', 'fdint>=2.0'],
     setup_requires=['pybind11>=2.4'],
     ext_modules=[build_cpp['ext']],
     cmdclass={

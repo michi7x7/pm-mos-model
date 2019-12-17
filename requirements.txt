@@ -1,9 +1,11 @@
-numpy
-scipy
-si_prefix
+numpy>=1.16
+scipy>=1.2
+matplotlib>=3.1
+si_prefix>=1.2.2
+fdint>=2.0
 
 ## data analysis tables
 #pandas
 
 ## compiling cpp-plugin
-pybind11
+pybind11>=2.3
