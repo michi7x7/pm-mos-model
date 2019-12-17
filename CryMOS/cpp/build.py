@@ -27,7 +27,7 @@ def get_boost_include(builddir='build'):
     if 'BOOST_ROOT' in os.environ:
         root = os.environ['BOOST_ROOT']
     else:
-        path = [builddir, '.', '~', __file__ + '../../build']
+        path = [builddir, '.', '~', os.path.dirname(__file__) + '/../../build']
 
         for p in path:
             root = os.path.expanduser(p + '/boost_1_72_0')
