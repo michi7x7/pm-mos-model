@@ -19,8 +19,26 @@ class get_pybind_include:
         return pybind11.get_include(self.user)
 
 
-def get_boost_include():
-        return "boost"
+def get_boost_include(builddir='build'):
+    import os
+
+    root = None
+
+    if 'BOOST_ROOT' in os.environ:
+        root = os.environ['BOOST_ROOT']
+    else:
+        path = [builddir, '.', '~', __file__ + '../../build']
+
+        for p in path:
+            root = os.path.expanduser(p + '/boost_1_72_0')
+            if os.path.exists(root):
+                break
+
+    if root is None or not os.path.exists(root + '/boost'):
+        from warnings import warn
+        warn("boost libraries could not be found, you might want to set `BOOST_ROOT`")
+
+    return root
 
 
 class BuildExt(build_ext):

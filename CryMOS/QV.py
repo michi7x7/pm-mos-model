@@ -266,7 +266,7 @@ class GildenblatQVpy(BeckersQVpy):
 
         k_0 = exp(-v_ch / phi_t)
 
-        u = phi_s / phi_t
+        u = np.array(phi_s / phi_t, dtype=np.longdouble)
         g_fun = 1. / lam * np.log(1. + lam * (np.exp(u) - 1))
         # g_fun = 1. / lam * np.logaddexp(log(1. - lam), log(lam)+u)  # only a single call to numpy: faster
         h2 = np.exp(-u) - 1 + g_fun + n_b / p_b * k_0 * (np.exp(u) - 1. - g_fun)
