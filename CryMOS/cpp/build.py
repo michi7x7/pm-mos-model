@@ -2,6 +2,7 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import sys
 import os
+from glob import glob
 import setuptools, distutils
 
 
@@ -118,7 +119,8 @@ ext = Extension(
         get_boost_include()
     ],
     language='c++',
-    optional=True
+    optional=True,
+    depends=glob(os.path.dirname(__file__) + '/*.hpp')
 )
 
 
