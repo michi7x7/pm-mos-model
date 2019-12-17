@@ -1,0 +1,9 @@
+numpy
+scipy
+si_prefix
+
+## data analysis tables
+#pandas
+
+## compiling cpp-plugin
+pybind11
