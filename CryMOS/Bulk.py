@@ -1,6 +1,8 @@
 """ Bulk model """
 from .constants import *
 from .base import writeable_property
+
+from math import sqrt
 import numpy as np
 from warnings import warn
 

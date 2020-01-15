@@ -2,12 +2,12 @@ from .constants import *
 from .Bulk import BulkModel, BulkModelFD, BulkModelTails
 from .base import MosModelBase, writeable_property
 
+from math import sqrt
 from scipy.integrate import quad
 
 __all__ = ['DefaultQV', 'BeckersQVpy',
-           'DiracQVpy',
-           'TailsQVpy',
-           'GildenblatQVpy']
+           'DiracQVpy', 'TailsQVpy',
+           'GildenblatQVpy', 'DefaultQV']
 
 
 class BeckersQVpy(MosModelBase, BulkModel):

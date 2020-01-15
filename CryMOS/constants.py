@@ -1,11 +1,11 @@
-from scipy.constants import (
-    e, pi, k, h, m_e, hbar, epsilon_0,
-    value as sc_value)
+""" various constants for silicon bulk substrates """
 
 from .utils import SiMemo
 
+from scipy.constants import (
+    e, pi, k, h, m_e, hbar, epsilon_0,
+    value as sc_value)
 import numpy as np
-from math import sqrt
 
 kb_eV = sc_value('Boltzmann constant in eV/K')
 
