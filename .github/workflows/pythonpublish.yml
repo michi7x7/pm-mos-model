@@ -1,0 +1,57 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    name: Deploy Python ${{ matrix.py_ver }} version for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        py_ver: ['3.7']
+    steps:
+    - uses: actions/checkout@v1
+    - name: Update Version Information
+      id: set_version
+      shell: bash
+      run: |
+        ver=$(echo ${{ github.event.release.tag_name }}  | sed 's/[^0-9]//')
+        printf "__version__ = '%s'" "$ver" > CryMOS/version.py
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.py_ver }}
+    - name: Install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+        # required for fdint
+        pip install numpy
+        pip install -r requirements.txt
+    - name: Build
+      id: build
+      shell: bash
+      run: |
+        if [ ! -f "$BOOST_ROOT/boost/version.hpp" ]; then
+            echo "download boost"
+            python setup.py download_boost
+            export BOOST_ROOT="$PWD/build/boost_1_72_0"
+        fi
+        python setup.py sdist bdist_wheel
+        cd dist
+        printf "::set-output name=whl_file::%s" *.whl
+      #   twine upload dist/*
+    - name: Upload Wheel File
+      id: upload-release-asset
+      if: github.event.release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: dist/${{ steps.build.outputs.whl_file }}
+        asset_name: ${{ steps.build.outputs.whl_file }}
+        asset_content_type: application/x-wheel+zip
