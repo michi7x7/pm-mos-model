@@ -10,8 +10,7 @@ Authors:
 The copyright (c) is with Infineon Technologies Austria AG, 2020.
 See the LICENSE file for the licensing terms. """
 
-__version__ = '0.1'
-
+from .version import __version__
 from .Bulk import BulkModel, BulkModelFD, BulkModelTails
 from .QV import *
 from .IV import *

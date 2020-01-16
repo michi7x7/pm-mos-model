@@ -1,10 +1,21 @@
 from setuptools import setup
 import distutils.cmd
+from distutils.command.build_py import build_py
 
 # don't import CryMOS!
 build_cpp = {'__file__': 'CryMOS/cpp/build.py'}
 with open('CryMOS/cpp/build.py') as f:
     exec(f.read(), build_cpp)
+
+ver_file = {'__file__': 'CryMOS/version.py'}
+with open('CryMOS/version.py') as f:
+    exec(f.read(), ver_file)
+
+import os
+if 'PM_MOS_VERSION' in os.environ:
+    version = os.environ['PM_MOS_VERSION']
+else:
+    version = ver_file['__version__']
 
 
 class DwnlBoostCommand(distutils.cmd.Command):
@@ -79,10 +90,32 @@ class DwnlBoostCommand(distutils.cmd.Command):
 
         return contents
 
+class BuildPyFixVersion(build_py):
+    """ fix version when building"""
+
+    user_options = build_py.user_options + [
+        ('version=', None, 'Version Name')
+    ]
+
+    def initialize_options(self):
+        super().initialize_options()
+        self.version = version
+
+    def run(self):
+        super().run()
+        self.fix_version()
+
+    def fix_version(self):
+        print("version is", self.version)
+
+        file = self.build_lib + "/CryMOS/version.py"
+        with open(file, 'w') as f:
+            f.write(f"__version__ = '{self.version}'\n")
+
 
 setup(
     name='pm-mos-model',
-    version='0.1',
+    version=version,
     packages=['CryMOS', 'CryMOS.cpp'],
     url='https://github.com/michi7x7/pm-mos-model',
     license='Apache License 2.0',
@@ -96,5 +129,6 @@ setup(
     cmdclass={
         'download_boost': DwnlBoostCommand,
         'build_ext': build_cpp['BuildExt'],
+        'build_py': BuildPyFixVersion,
     }
 )

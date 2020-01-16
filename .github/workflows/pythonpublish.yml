@@ -19,7 +19,8 @@ jobs:
       shell: bash
       run: |
         ver=$(echo ${{ github.event.release.tag_name }}  | sed 's/[^0-9]//')
-        printf "__version__ = '%s'" "$ver" > CryMOS/version.py
+        echo "package version is" "$ver"
+        printf "::set-output name=version::%s" "$ver"
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -40,7 +41,8 @@ jobs:
             python setup.py download_boost
             export BOOST_ROOT="$PWD/build/boost_1_72_0"
         fi
-        python setup.py sdist bdist_wheel
+        export PM_MOS_VERSION=${{ steps.set_version.outputs.version }}
+        python setup.py bdist_wheel
         cd dist
         printf "::set-output name=whl_file::%s" *.whl
       #   twine upload dist/*
@@ -51,7 +53,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ github.event.release.upload_url }}
         asset_path: dist/${{ steps.build.outputs.whl_file }}
         asset_name: ${{ steps.build.outputs.whl_file }}
         asset_content_type: application/x-wheel+zip
