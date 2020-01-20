@@ -1,8 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8" />
+<head><meta charset="utf-8"/>
 
-<title>bulk_computations</title>
+<!-- javascript from CDN for conversion -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.js"></script>
+
+    
+
+
+<script type="text/x-mathjax-config">
+// make sure that equations numbers are enabled
+MathJax.Hub.Config({ TeX: { equationNumbers: {
+    autoNumber: "AMS", // All AMS equations are numbered
+    useLabelIds: true, // labels as ids
+    // format the equation number - uses an offset eqNumInitial (default 0)
+    formatNumber: function (n) {return String(Number(n)+Number(1)-1)} 
+    } } 
+});
+</script>
+
+
+
+<meta charset="utf-8" />
+
+<title>doc</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13127,7 +13148,69 @@ div#notebook {
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration -->
+
+
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
+<!-- stylesheet from CDN -->
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/jfbercher/jupyter_latex_envs/master/src/latex_envs/static/latex_envs.css">
+
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+<link rel="stylesheet" href="custom.css"> 
+
+<!-- Load mathjax 
+<script src="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/latex_envs/thmsInNb4.js"></script>
+-->
+<script type="text/javascript"  src="https://rawgit.com/jfbercher/jupyter_latex_envs/master/src/latex_envs/static/thmsInNb4.js"> </script>
+
+
+
+<script>
+$( document ).ready(function(){
+
+        //Value of configuration variables, some taken from the notebook's metada. 
+        eqNum = 0; // begins equation numbering at eqNum+1
+        eqLabelWithNumbers = "True"=="True" ? true : false; //if true, label equations with equation numbers; 
+                                       //otherwise using the tag specified by \label
+        conversion_to_html = false;
+        current_cit=1;
+        cite_by='key';  //only number and key are supported
+        //var document={}
+        document.bibliography={};
+
+        // Read environment map config
+        initmap();
+        // Read user envs config, if specified
+        
+                var data = 
+                environmentMap = $.extend(true,{}, environmentInitialMap,data)
+        
+
+        // fire the main function with these parameters
+        var html_to_analyse = $('body').html()
+        var html_converted = thmsInNbConv(marked,html_to_analyse);
+        html_converted = html_converted.replace(/%[\S\t ]*<\/p>/gm,"</p>")
+        $('body').html(html_converted)
+        // Show/hide anchors
+        var labels_anchors = "True"=="True" ? true : false;
+        $('.latex_label_anchor').toggle(labels_anchors)
+        // Number all environments
+        report_style_numbering = "False"=="True" ? true : false;
+        reset_counters();
+        renumberAllEnvs();
+    });
+</script></head>
+
+
+<div id='latex_user_defs'>
+        
+</div>
+
+
+
 <body>
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
@@ -13229,12 +13312,11 @@ transistor. With the model also charge carrier concentrations and the Fermi ener
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Defined-constants-and-temperature-dependencies">Defined constants and temperature dependencies<a class="anchor-link" href="#Defined-constants-and-temperature-dependencies">&#182;</a></h2><p>Constants and the temperature dependency of the bandgap and effective masses are defined in "constants.py".</p>
 <h3 id="bandgap-$E_G$">bandgap $E_G$<a class="anchor-link" href="#bandgap-$E_G$">&#182;</a></h3><p>The bandgap (as a function of temperature) is computed by an empirical
-relation by Varshni \cite{VARSHNI}:
+relation by Varshni \cite{VARSHNI}:</p>
 \begin{equation}
 \label{eq:varshni}
 E_g(T) = E_g(0) - \frac{\alpha T^2}{T + \beta},
-\end{equation}
-where the values for $E_g(0)$ , $\alpha$ and $\beta$ are taken from reference \cite{ALEX}:
+\end{equation}<p>where the values for $E_g(0)$ , $\alpha$ and $\beta$ are taken from reference \cite{ALEX}:</p>
 \begin{equation}
 \begin{gathered}
 \label{eq:varshni_params}
@@ -13242,8 +13324,7 @@ E_g(0) = 1.1692 \,\mathrm{eV} \\
 \alpha = 4.9    \,\mathrm{eV K^{-1}}                                     \\
 \beta = 655     \,\mathrm{K}.
 \end{gathered}
-\end{equation}</p>
-
+\end{equation}
 </div>
 </div>
 </div>
@@ -13276,10 +13357,10 @@ E_g(0) = 1.1692 \,\mathrm{eV} \\
 
 
 
-<div id="f53e2be9-fbc0-4e16-8c08-bcdf9138691d"></div>
+<div id="10c4b2df-c565-4b4a-8092-7aaa0f3e5738"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#f53e2be9-fbc0-4e16-8c08-bcdf9138691d');
+var element = $('#10c4b2df-c565-4b4a-8092-7aaa0f3e5738');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -14074,27 +14155,23 @@ if (IPython.notebook.kernel != null) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="effectvie-masses-$m_n$-$m_p$">effectvie masses $m_n$ $m_p$<a class="anchor-link" href="#effectvie-masses-$m_n$-$m_p$">&#182;</a></h3><p>The following temperature dependencies are used for the effective masses of electrons $m_n$ and for the effective masses of holes $m_h$ \cite{CAIAFA}:
+<h3 id="effectvie-masses-$m_n$-$m_p$">effectvie masses $m_n$ $m_p$<a class="anchor-link" href="#effectvie-masses-$m_n$-$m_p$">&#182;</a></h3><p>The following temperature dependencies are used for the effective masses of electrons $m_n$ and for the effective masses of holes $m_h$ \cite{CAIAFA}:</p>
 \begin{equation}
 \label{eq:me_emp}
 m_n = -1.084e-9 T^3 + 7.580e-7 T^2 + 2.862e-4 T + +1.057
-\end{equation}
-and
+\end{equation}<p>and</p>
 \begin{multline}
 \label{eq:mh_emp}
 m_p = 1.872e-11 T^4 - 1.969e-8 T^3 + 5.857e-6 T^2  + +2.712e-4 T + 0.584.
-\end{multline}</p>
-<h3 id="effectvie-density-of-states-$N_c$-$N_v$">effectvie density of states $N_c$ $N_v$<a class="anchor-link" href="#effectvie-density-of-states-$N_c$-$N_v$">&#182;</a></h3><p>The above stated temperature dependence of the effective masses allows the computation of the effective density of states \cite{SZE}:
+\end{multline}<h3 id="effectvie-density-of-states-$N_c$-$N_v$">effectvie density of states $N_c$ $N_v$<a class="anchor-link" href="#effectvie-density-of-states-$N_c$-$N_v$">&#182;</a></h3><p>The above stated temperature dependence of the effective masses allows the computation of the effective density of states \cite{SZE}:</p>
 \begin{equation}
 \label{eq:eff_dens_N_c}
 N_c = 2 \left(\frac{m_{n} k_b T}{2 \pi \hbar^2}\right)^{3/2},
-\end{equation}
-and
+\end{equation}<p>and</p>
 \begin{equation}
 \label{eq:eff_dens_N_v}
 N_v = 2 \left(\frac{m_{p} k_b T}{2 \pi \hbar^2}\right)^{3/2}.
-\end{equation}</p>
-
+\end{equation}
 </div>
 </div>
 </div>
@@ -14137,10 +14214,10 @@ N_v = 2 \left(\frac{m_{p} k_b T}{2 \pi \hbar^2}\right)^{3/2}.
 
 
 
-<div id="70cf04bc-599b-439e-9ff5-2ee93799c8d9"></div>
+<div id="b8e70e24-b782-46ed-a086-524845a0e633"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#70cf04bc-599b-439e-9ff5-2ee93799c8d9');
+var element = $('#b8e70e24-b782-46ed-a086-524845a0e633');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -14936,10 +15013,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="1a047584-c037-4aab-bdec-8228e7046779"></div>
+<div id="f84ca38e-c106-4024-93d3-aec1b2532ada"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#1a047584-c037-4aab-bdec-8228e7046779');
+var element = $('#f84ca38e-c106-4024-93d3-aec1b2532ada');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -15748,16 +15825,14 @@ scope='row'>E_D</th> <td>donor energy level</td> <td>E_c - $0.45  \, \mathrm{eV}
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Computation-of-charge-carries">Computation of charge carries<a class="anchor-link" href="#Computation-of-charge-carries">&#182;</a></h3><p>If the Fermi level is known, charge carriers can be computed using the Boltzmann approximation \cite{SZE}:
+<h3 id="Computation-of-charge-carries">Computation of charge carries<a class="anchor-link" href="#Computation-of-charge-carries">&#182;</a></h3><p>If the Fermi level is known, charge carriers can be computed using the Boltzmann approximation \cite{SZE}:</p>
 \begin{equation}
 \label{n_dop}
 n = N_c \exp{\left(\frac{E_c - E_f}{k_b T}\right)} ,
-\end{equation}
-\begin{equation}
+\end{equation}\begin{equation}
 \label{p_dop}
 p = N_v \exp{\left(\frac{E_f - E_v}{k_b T}\right)} ,
-\end{equation}</p>
-
+\end{equation}
 </div>
 </div>
 </div>
@@ -15794,10 +15869,10 @@ p = N_v \exp{\left(\frac{E_f - E_v}{k_b T}\right)} ,
 
 
 
-<div id="2c8dadbb-fb7d-4655-84d1-754ed982e212"></div>
+<div id="08ccf331-279d-4124-9765-ccb1e1422af5"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2c8dadbb-fb7d-4655-84d1-754ed982e212');
+var element = $('#08ccf331-279d-4124-9765-ccb1e1422af5');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -16592,20 +16667,18 @@ if (IPython.notebook.kernel != null) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Computation-of-Fermi-level">Computation of Fermi level<a class="anchor-link" href="#Computation-of-Fermi-level">&#182;</a></h3><p>The Fermi level is computed requiring the charge neutrality condition. 
+<h3 id="Computation-of-Fermi-level">Computation of Fermi level<a class="anchor-link" href="#Computation-of-Fermi-level">&#182;</a></h3><p>The Fermi level is computed requiring the charge neutrality condition.</p>
 \begin{equation}
 \label{eq:char_neutr}
 n + N_A ^- = p + N_D^+ , 
-\end{equation}
-where incomplete ionization is considered as follows \cite{SZE}:
+\end{equation}<p>where incomplete ionization is considered as follows \cite{SZE}:</p>
 \begin{equation}
 \begin{aligned}
 \label{eq:ionized}
 N_A^- = \frac{N_A}{1+ g_A \exp{\left((E_A-E_f)/ (k_b T)\right)}}        \\
 N_D^+ = \frac{N_D}{1+ g_D \exp{\left((E_f-E_D)/ (k_b T)\right)}}.
 \end{aligned}
-\end{equation}</p>
-
+\end{equation}
 </div>
 </div>
 </div>
@@ -16653,10 +16726,10 @@ N_D^+ = \frac{N_D}{1+ g_D \exp{\left((E_f-E_D)/ (k_b T)\right)}}.
 
 
 
-<div id="c55573eb-e257-4702-85d9-fc8d51fee6d6"></div>
+<div id="6c884ba4-dfbc-4f3f-b8f8-f43e8196b2c5"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c55573eb-e257-4702-85d9-fc8d51fee6d6');
+var element = $('#6c884ba4-dfbc-4f3f-b8f8-f43e8196b2c5');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -17507,10 +17580,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="c98f5c5b-682f-4506-986c-4ddacee8776a"></div>
+<div id="892dadf1-ba1d-42f5-9c6b-04edfe724d58"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#c98f5c5b-682f-4506-986c-4ddacee8776a');
+var element = $('#892dadf1-ba1d-42f5-9c6b-04edfe724d58');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -18306,31 +18379,26 @@ if (IPython.notebook.kernel != null) {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-Bulk-model-(Fermi-Dirac)">The Bulk model (Fermi-Dirac)<a class="anchor-link" href="#The-Bulk-model-(Fermi-Dirac)">&#182;</a></h2><p>The Fermi-Dirac bulk model allows the calculation of charge carriers using Fermi Dirac integrals. The BulkModelFD is a child class that inherits all the paramters and methods from the parent class BulkModel. The calculation of charge carriers is, however, overwritten to be computed with Fermi Dirac integrals. 
-The electron density is computed via \cite{SZE}:
+The electron density is computed via \cite{SZE}:</p>
 \begin{equation}
 \label{eq:n_fd}
 n = \int_{E_c}^{\infty} f(E) D_{c}(E) dE,
-\end{equation}
-where $f(E)$ is the Fermi function: 
+\end{equation}<p>where $f(E)$ is the Fermi function:</p>
 \begin{equation}
 f(E) = \frac{1}{1 + \exp{\left(\frac{E - E_f}{k_b T} \right)}},
-\end{equation}
-and $D_c(E)$ the density of states in the conduction band. $D_c(E)$ is linked to the effective density of states in the conduction band $N_c$ via:
+\end{equation}<p>and $D_c(E)$ the density of states in the conduction band. $D_c(E)$ is linked to the effective density of states in the conduction band $N_c$ via:</p>
 \begin{equation}
 \label{eq:dc_fd}
 D_c = \frac{2}{\sqrt{\pi}} \frac{N_c}{(k_b T )^{3/2}}.
-\end{equation}</p>
-<p>Analogously the concentration of holes is computed via \cite{SZE}:
+\end{equation}<p>Analogously the concentration of holes is computed via \cite{SZE}:</p>
 \begin{equation}
 \label{eq:p_fd}
 p = \int_{-\infty}^{E_v} (1-f(E)) D_{v}(E) dE,
-\end{equation}
-where the density of states in the valence band $D_c(E)$ is linked to the effective density of states in the valence band $N_v$ via:
+\end{equation}<p>where the density of states in the valence band $D_c(E)$ is linked to the effective density of states in the valence band $N_v$ via:</p>
 \begin{equation}
 \label{eq:dv_fd}
 D_v = \frac{2}{\sqrt{\pi}} \frac{N_v}{(k_b T )^{3/2}}.
-\end{equation}</p>
-<p>The integrals in eq. \ref{eq:n_fd} and eq. \ref{eq:p_fd} can not be solved analytically.</p>
+\end{equation}<p>The integrals in eq. \ref{eq:n_fd} and eq. \ref{eq:p_fd} can not be solved analytically.</p>
 
 </div>
 </div>
@@ -18380,31 +18448,28 @@ D_v = \frac{2}{\sqrt{\pi}} \frac{N_v}{(k_b T )^{3/2}}.
 <h3 id="Parameters">Parameters<a class="anchor-link" href="#Parameters">&#182;</a></h3><p>The following additional parameters need to be defined:</p>
 <table class='table table-striped'> <thead> <tr> <th>parameter</th> <th>description</th> <th>default value</th>  </tr> </thead> <tbody> <tr> <th 
   scope='row'>chi</th> <td>electron affinity </td> <td>$4.05  \, \mathrm{eV}$ </td>  </tr> <tr> <th       scope='row'>phi_m</th> <td>metal work function </td> <td>chi</td>  </tr> <tr> <th scope='row'>cox</th> <td>oxide capacitance </td> <td>$10  \, \mathrm{mFm^{-2}}$</td>  </tr> <tr> <th                                                                                                            
-</tbody> </table><h3 id="Metal-semiconductor-work-function-$\phi_{ms}$">Metal-semiconductor work function $\phi_{ms}$<a class="anchor-link" href="#Metal-semiconductor-work-function-$\phi_{ms}$">&#182;</a></h3><p>$\phi_{ms}$ is computed via:
+</tbody> </table><h3 id="Metal-semiconductor-work-function-$\phi_{ms}$">Metal-semiconductor work function $\phi_{ms}$<a class="anchor-link" href="#Metal-semiconductor-work-function-$\phi_{ms}$">&#182;</a></h3><p>$\phi_{ms}$ is computed via:</p>
 \begin{equation}
 \phi_{ms} = \phi_m - \phi_s
-\end{equation} , 
-where
+\end{equation}<p>, 
+where</p>
 \begin{equation}
 \phi_{s} = E_c - E_f + \chi
-\end{equation}.</p>
+\end{equation}<p>.</p>
 <h3 id="The-surface,-acceptor-and-bulk-potential">The surface, acceptor and bulk potential<a class="anchor-link" href="#The-surface,-acceptor-and-bulk-potential">&#182;</a></h3><p>The surface potential $\psi_s$ is a central quantity for the calculation of charge carriers. 
-It should be noted, that all of the energies and potentials in the python model are linked to the Fermi energy $E_f$. In this convention the surface potential $\psi_s$ is defined as:
+It should be noted, that all of the energies and potentials in the python model are linked to the Fermi energy $E_f$. In this convention the surface potential $\psi_s$ is defined as:</p>
 \begin{equation}
 \label{eq:psisdef2}
 \psi_{s} = \frac{E_{f} - E_{i,s}}{e},
-\end{equation}
-wherer $E_{i,s}$ describes the intrinsic energy at the semiconductor oxide interface. Once the surface potential as a function of the gate voltage is computed, charge carrier density (sheet densities) in the channel can be calculated which allows in the following the calculation of a drain to source current. 
-Analougsly the acceptor $\psi_A$ and bulk potential $\psi_b$ can be defined as follows: 
+\end{equation}<p>wherer $E_{i,s}$ describes the intrinsic energy at the semiconductor oxide interface. Once the surface potential as a function of the gate voltage is computed, charge carrier density (sheet densities) in the channel can be calculated which allows in the following the calculation of a drain to source current. 
+Analougsly the acceptor $\psi_A$ and bulk potential $\psi_b$ can be defined as follows:</p>
 \begin{equation}
 \label{eq:psia}
 \psi_{A} = \frac{E_{A} - E_{i}}{e},
-\end{equation}
-\begin{equation}
+\end{equation}\begin{equation}
 \label{eq:psib}
 \psi_{b} = \frac{E_{f} - E_{i,b}}{e}.
-\end{equation}</p>
-<p>It should be noted that $\psi_A$ and $\psi_b$ do not depend on any external bias and can thus be calculated right away.</p>
+\end{equation}<p>It should be noted that $\psi_A$ and $\psi_b$ do not depend on any external bias and can thus be calculated right away.</p>
 
 </div>
 </div>
@@ -18450,12 +18515,11 @@ Analougsly the acceptor $\psi_A$ and bulk potential $\psi_b$ can be defined as f
 \mathcal{E}_{s}^2 = \frac{2 e n_i \phi_t}{\epsilon_{si}} \left(\exp{(\frac{\psi_{s} - V_{ch}}{\phi_t})} - \exp{(\frac{\psi_{b} - V_{ch}}{\phi_t})} + \exp{(\frac{-\psi_{s}}{\phi_t})} - \exp{(\frac{-\psi_{b}}{\phi_t})}\right) \\
 + \frac{2 e N_A}{\epsilon_{si}} \left(\psi_s - \psi_b - \phi_t \log{\left(\frac{1 + g_A \exp{\frac{\psi_A - \psi_b}{\phi_t}}}{1 + g_A \exp{\frac{\psi_A - (\psi_s - \psi_{b})}{\phi_t}}}\right)}\right),
 \end{multline}<p>whrere $\phi_t = \frac{k_b T}{e}$ is the thermal voltage, and $V_{ch}$ the channel voltage (see section?)</p>
-<h3 id="The-potential-loop">The potential loop<a class="anchor-link" href="#The-potential-loop">&#182;</a></h3><p>The potential loop equation links the surface potential $\psi_s$ to the applied gate voltage $V_{GB}$ \cite{BECKERS}:<br>
+<h3 id="The-potential-loop">The potential loop<a class="anchor-link" href="#The-potential-loop">&#182;</a></h3><p>The potential loop equation links the surface potential $\psi_s$ to the applied gate voltage $V_{GB}$ \cite{BECKERS}:</p>
 \begin{equation}
 \label{eq:pot_loop2}
 V_{GB} = (\psi_s - \psi_b )  + \phi_{ms} + \epsilon_{si} \mathcal{E}_{s}(\psi_{s}) / C_{ox} + Q_0 / C_{ox}.
-\end{equation}</p>
-<p>This equation is solved implicitly for very gate voltage.</p>
+\end{equation}<p>This equation is solved implicitly for very gate voltage.</p>
 
 </div>
 </div>
@@ -18493,10 +18557,10 @@ V_{GB} = (\psi_s - \psi_b )  + \phi_{ms} + \epsilon_{si} \mathcal{E}_{s}(\psi_{s
 
 
 
-<div id="6057ae1d-bda0-4198-a18b-a61a60a1794f"></div>
+<div id="37355d5e-1b30-47a6-ac98-9df73669222e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#6057ae1d-bda0-4198-a18b-a61a60a1794f');
+var element = $('#37355d5e-1b30-47a6-ac98-9df73669222e');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -19328,10 +19392,10 @@ Q_m = \frac{\epsilon_{si} \mathcal{E}_{s}}{C_{ox}} +  \epsilon_{si} \sqrt{\frac{
 
 
 
-<div id="b2e1bd93-fdfc-4107-8dd2-af947d170f88"></div>
+<div id="9ad416c9-6822-4499-99c3-b85e9c5b3e39"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#b2e1bd93-fdfc-4107-8dd2-af947d170f88');
+var element = $('#9ad416c9-6822-4499-99c3-b85e9c5b3e39');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -20127,13 +20191,12 @@ if (IPython.notebook.kernel != null) {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-QV-model-(Fermi-Dirac)">The QV model (Fermi Dirac)<a class="anchor-link" href="#The-QV-model-(Fermi-Dirac)">&#182;</a></h2><p>The DiracQVpy class is a child class to the BeckersQVpy class and BulkModelFD class and inherits all the methods and paramters. This means that charge carriers are computed with the Fermi Dirac integrals. 
-The calculation of $E_s$ is overwritten in this class to be: 
+The calculation of $E_s$ is overwritten in this class to be:</p>
 \begin{multline}
 \label{eq:FD_psis}
 \mathcal{E}_{s}^{2} = \frac{2 e}{\epsilon_{si}} \int_{\psi_b}^{\psi_s} \left(-\int_{E_c}^{\infty} \frac{1}{1+ \exp{\left(\frac{E-e \psi - E_i}{k_b T}\right)}} D_{c}(E) dE + \right. \\
  \left. \int_{-\infty}^{E_v} \left(1- \frac{1}{1+ \exp{\left(\frac{E-e \psi - E_i}{k_b T}\right)}}\right) D_{v}(E) dE - N_{A}^{-}  \right)  d\psi
-\end{multline}</p>
-<p>The rest of the computations stays the same.</p>
+\end{multline}<p>The rest of the computations stays the same.</p>
 
 </div>
 </div>
@@ -20182,10 +20245,10 @@ The calculation of $E_s$ is overwritten in this class to be:
 
 
 
-<div id="16d81b48-74b9-4f08-83fa-a889b04ba8db"></div>
+<div id="58c15a15-d505-48ab-ab57-7d1aad977acb"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#16d81b48-74b9-4f08-83fa-a889b04ba8db');
+var element = $('#58c15a15-d505-48ab-ab57-7d1aad977acb');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -20981,10 +21044,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="2aa15b6a-9fc8-483c-a470-05146bc4ac39"></div>
+<div id="fc19a688-fab4-42c0-9540-9d54bd91b43d"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#2aa15b6a-9fc8-483c-a470-05146bc4ac39');
+var element = $('#fc19a688-fab4-42c0-9540-9d54bd91b43d');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -21787,11 +21850,11 @@ if (IPython.notebook.kernel != null) {
 $V_{ch}$  shifts the potential $\psi_s$ in the calculation of the electron concentration  $n$ 
 in eq. \ref{eq:es2}.
 The computation for $\psi_s$ and $E_{s}$ now also depends on the horizontal position $x$. To calculate a current flowing from source to drain an integral along this axis ($x$) will be performed as will be shown in the next section.</p>
-<h3 id="Effective-mobility-$\mu_{eff}$-as-a-function-of-the-gate-voltage">Effective mobility $\mu_{eff}$ as a function of the gate voltage<a class="anchor-link" href="#Effective-mobility-$\mu_{eff}$-as-a-function-of-the-gate-voltage">&#182;</a></h3><p>Per default a very simple mobility model (mobmod==0) is used:
+<h3 id="Effective-mobility-$\mu_{eff}$-as-a-function-of-the-gate-voltage">Effective mobility $\mu_{eff}$ as a function of the gate voltage<a class="anchor-link" href="#Effective-mobility-$\mu_{eff}$-as-a-function-of-the-gate-voltage">&#182;</a></h3><p>Per default a very simple mobility model (mobmod==0) is used:</p>
 \begin{equation}
 \label{eq:ids_mudef}
 \mu_{eff}(V_{GB}) = \frac{\mu_{0}}{1 + \theta V_{GB}}.
-\end{equation},
+\end{equation}<p>,
 however, several more sophisticated mobility models are implemented as well (modmod== 1,2), for details see the definition of $\mu_{eff}$.</p>
 <h3 id="The-drain-to-source-current">The drain to source current<a class="anchor-link" href="#The-drain-to-source-current">&#182;</a></h3><p>An expression for $I_{DS}$ starting from drift and diffusion transport equation can be written in an integral form in terms of the channel voltage $V_{ch}$ \cite{ENZ}:</p>
 \begin{equation}
@@ -21834,10 +21897,10 @@ I_{DS} = - \mu_{eff}(V_{GB})  \int_{V_{SB}}^{V_{DB}} Q_I(V_{ch}) dV_{ch}.
 
 
 
-<div id="d14bf977-ea5f-4236-b7ea-d5b4714c4931"></div>
+<div id="9de36734-52dd-411c-85f5-d75e0f9584ed"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#d14bf977-ea5f-4236-b7ea-d5b4714c4931');
+var element = $('#9de36734-52dd-411c-85f5-d75e0f9584ed');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -22669,10 +22732,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="69c3f72f-e6bc-46f0-b0df-15605c15ec89"></div>
+<div id="580a8b38-bbcd-4170-a3c1-86876dee9c63"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#69c3f72f-e6bc-46f0-b0df-15605c15ec89');
+var element = $('#580a8b38-bbcd-4170-a3c1-86876dee9c63');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -23483,8 +23546,4 @@ if (IPython.notebook.kernel != null) {
     </div>
   </div>
 </body>
-
- 
-
-
 </html>
