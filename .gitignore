@@ -1,3 +1,6 @@
+# ignore from here so that automatic publish works
+/docs/examples
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
