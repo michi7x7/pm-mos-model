@@ -28,7 +28,8 @@ def E_g_Si_Caiafa(T):
 
 @SiMemo
 def E_g_Si_Varshni(T):
-    """ model ed after Varshni semiempirical E_G model
+    """ model ed after Varshni semiempirical E_G model ("Temperature dependence of the energy gap in semicon-
+ductors", Varshni)
 
     values taken from Temperature dependence of the indirect energy gap in crystalline silicon; Alex et al. """
     Eg_0 = 1.1692  # [eV]
@@ -91,17 +92,16 @@ def D_v_Si(T):
 
 @SiMemo
 def m_n_Si(T):
-    """ effective hole mass for Si, taken from CAIAFA et al. """
+    """ effective hole mass for Si, taken from CAIAFA et al. (“Cryogenic study and modeling of IGBTs”, Caiafa et al.)"""
     a = -1.084e-9
     b = +7.580e-7
     c = +2.862e-4
     d = +1.057
     return (a * T ** 3 + b * T ** 2 + c * T + d) * m_e
 
-
 @SiMemo
 def m_p_Si(T):
-    """ effective hole mass for Si, taken from taken from CAIAFA et al. """
+    """ effective hole mass for Si, taken from taken from CAIAFA et al. (“Cryogenic study and modeling of IGBTs”, Caiafa et al.)"""
     a = +1.872e-11
     b = -1.969e-8
     c = +5.857e-6

@@ -30,7 +30,7 @@ class BulkModel:
         self._bulk_n_memo = None
         self._Ei_memo = None
 
-        self.temp = None
+        self.temp = 300.
 
         self.N_A = 1e23  # bulk doping in 1/m^3
         self.N_D = 0.
