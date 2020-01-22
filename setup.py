@@ -80,6 +80,57 @@ class DwnlBoostCommand(distutils.cmd.Command):
         return contents
 
 
+class BuildDocCmd(distutils.cmd.Command):
+    """A custom command to run Pylint on all Python source files."""
+
+    description = 'Build Documentation'
+    user_options = []
+
+    def initialize_options(self):
+        """Set default values for options."""
+        pass
+
+    def finalize_options(self):
+        """Post-process options."""
+        pass
+
+    def run(self):
+        """Run command."""
+        self.convert_ipynb()
+
+    def convert_ipynb(self):
+        from subprocess import run, CalledProcessError
+        from os import path, makedirs
+        from glob import glob
+
+        try:
+            import jupyter
+            import jupyter_contrib_nbextensions
+        except ImportError as e:
+            raise RuntimeError("jupyter and jupyter_controb_nbextensions must be installed!") from e
+
+        dir = path.dirname(__file__)
+        sdir = path.join(dir, 'examples')
+        ddir = path.join(dir, 'docs', 'examples')
+        makedirs(ddir, exist_ok=True)
+
+
+        files = glob(sdir + "/*.ipynb")
+        for f in files:
+            try:
+                print(f"converting {f}")
+                r1 = run(rf"""jupyter nbconvert --output-dir="{ddir}" --to html_with_lenvs "{f}" """,
+                    shell=True, text=True, capture_output=True)
+
+                # if latex_envs fails, try conversion without lenvs
+                if r1.returncode != 0:
+                    r1 = run(rf"""jupyter nbconvert --output-dir="{ddir}" --to html "{f}" """,
+                             shell=True, text=True, capture_output=True)
+                    r1.check_returncode()
+
+            except CalledProcessError as e:
+                raise RuntimeError(f"{e.stderr}\n\nconverting {f} failed") from e
+
 setup(
     name='pm-mos-model',
     version='0.1',
@@ -95,6 +146,7 @@ setup(
     ext_modules=[build_cpp['ext']],
     cmdclass={
         'download_boost': DwnlBoostCommand,
+        'build_doc': BuildDocCmd,
         'build_ext': build_cpp['BuildExt'],
     }
 )
