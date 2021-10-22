@@ -1,3 +1,5 @@
+import numpy as np
+
 from .constants import *
 from .Bulk import BulkModel, BulkModelFD, BulkModelTails
 from .base import MosModelBase, writeable_property
@@ -188,6 +190,38 @@ class BeckersQVpy(MosModelBase, BulkModel):
         fac = fac or np.linspace(-2, 2, 5)
         self.psi_t = psi_t_c + self.phi_t * fac
         self.N_t = np.full_like(self.psi_t, N_t)
+
+    def y_psi(self, v_gb, v_ch=0, linlog=0.5, logend=1e-3) -> (np.ndarray, np.ndarray):
+        """ calculate the band structure in vertical direction
+
+        returns: y, psi
+        """
+
+        from math import log10, fabs
+
+        psi_s = self.psi_s(v_ch, v_gb)
+        psi_b = self.psi_b
+
+        integr = lambda psi: 1/self.Es(psi, v_ch, psi_b=psi_b)
+
+        if np.isclose(psi_s, psi_b):
+            return [0, 1e-6], [psi_s, psi_b]
+
+        del_psi = psi_s - psi_b
+
+        # linear close to the interface, log further away
+        # as per suggestion in https://h-gens.github.io/automated-drawing-of-the-mos-band-diagram.html
+        psis = psi_b + del_psi*np.hstack((
+            np.linspace(1, linlog, 51),
+            np.logspace(log10(linlog), log10(logend), 101)[1:]
+        ))
+
+        @np.vectorize
+        def get_y(psi):
+            return quad(integr, psi, psi_s)[0]
+
+        y = get_y(psis)
+        return y, psis
 
 
 class DiracQVpy(BulkModelFD, BeckersQVpy):

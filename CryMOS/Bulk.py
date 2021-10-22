@@ -152,10 +152,17 @@ class BulkModel:
 
         TODO: implement N_D?
         """
-        assert self.N_A > self.N_D, "NMOS only"
+        # assert self.N_A > self.N_D, "NMOS only"
 
-        fac = 1 + np.sqrt(1 + 4 * self.g_A * self.N_A / self.N_v * np.exp((self.E_A - self.E_v) / (k * self.temp)))
-        return k * self.temp * np.log(self.N_v / self.N_A) + k * self.temp * np.log(fac / 2)
+        if self.N_A > 1000 * self.N_D:
+            fac = 1 + np.sqrt(1 + 4 * self.g_A * self.N_A / self.N_v * np.exp((self.E_A - self.E_v) / (k * self.temp)))
+            return self.E_v + k * self.temp * np.log(self.N_v / self.N_A) + k * self.temp * np.log(fac / 2)
+        elif self.N_D > 1000 * self.N_A:
+            fac = 1 + np.sqrt(1 + 4 * self.g_D * self.N_D / self.N_c * np.exp((self.E_c - self.E_D) / (k * self.temp)))
+            return self.E_c - k * self.temp * np.log(self.N_c / self.N_D) - k * self.temp * np.log(fac / 2)
+        else:
+            raise AttributeError("only for NMOS or PMOS")
+
 
     @property
     def E_f_boltzmann(self):
@@ -229,6 +236,14 @@ class BulkModel:
     def psi_a(self):
         """ defined below eq. (2)"""
         return (self.E_A - self.E_i) / e  # acceptor potential
+
+    @property
+    def psi_v(self):
+        return (self.E_v - self.E_i) / e  # acceptor potential
+
+    @property
+    def psi_c(self):
+        return (self.E_c - self.E_i) / e  # acceptor potential
 
     @property
     def psi_b(self):
@@ -340,13 +355,19 @@ class BulkModelFD(BulkModel):
             self._Ei_memo = self._Ei_calc()
         return self._Ei_memo
 
+    def N_Tm(self, E_f):
+        return 0.
+
+    def N_Tp(self, E_f):
+        return 0.
+
     def _fermi_energy_bulk(self):
         """calculates the doped Si Fermi energy, solving the implicit equation for E_f """
         from scipy.optimize import root_scalar
 
         def root_fun(E_f):
-            p_term = self.p(E_f) - self.N_Am(E_f)
-            n_term = self.n(E_f) - self.N_Dp(E_f)
+            p_term = self.p(E_f) - self.N_Am(E_f) - self.N_Tm(E_f)
+            n_term = self.n(E_f) - self.N_Dp(E_f) - self.N_Tp(E_f)
             return p_term - n_term
         try:  # n_approx2 and p_approx2 are only stable to a few kBT in band
             res = root_scalar(root_fun, bracket=[self.E_v + 3*self.kBT, self.E_c - 3*self.kBT], xtol=1e-60)

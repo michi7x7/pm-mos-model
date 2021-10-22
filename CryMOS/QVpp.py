@@ -65,7 +65,7 @@ class DiracQVcpp(DiracQVpy):
         def psi_s(self, v_ch, v_gb):
             return self._get_solver().psi_s(v_ch, v_gb)
 
-        def Es(self, psi_s, v_ch):
+        def Es(self, psi_s, v_ch, psi_b=None):
             return self._get_solver().Es(psi_s, v_ch)
 
 
@@ -97,5 +97,5 @@ class GildenblatQVcpp(GildenblatQVpy):
         def psi_s(self, v_ch, v_gb):
             return self._get_solver().psi_s(v_ch, v_gb)
 
-        def Es(self, psi_s, v_ch):
+        def Es(self, psi_s, v_ch, psi_b=None):
             return self._get_solver().Es(psi_s, v_ch)
