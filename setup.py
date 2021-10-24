@@ -164,6 +164,7 @@ class BuildDocCmd(distutils.cmd.Command):
             except CalledProcessError as e:
                 raise RuntimeError(f"{e.stderr}\n\nconverting {f} failed") from e
 
+
 setup(
     name='pm-mos-model',
     version=version,
