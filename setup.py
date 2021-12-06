@@ -1,3 +1,4 @@
+print(1/0)
 from setuptools import setup
 import distutils.cmd
 from distutils.command.build_py import build_py
