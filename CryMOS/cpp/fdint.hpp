@@ -10,6 +10,8 @@
 // N: the order is +/- N/2
 // Example: fdm9h: k=-9/2
 
+#include <iostream>
+
 namespace py = pybind11;
 
 using fd_fun_t = double(double); // all fd*, dfd* and ifd* methods have this signature

@@ -3,7 +3,7 @@ from si_prefix import split, prefix, si_prefix_expof10
 from warnings import warn
 
 # this is the biggest float64 that can be put in exp()
-F64_LMAX = np.log(np.finfo(np.float).max)
+F64_LMAX = np.log(np.finfo(float).max)
 
 
 def si_scale(x: np.ndarray, pref=None):

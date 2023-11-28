@@ -71,8 +71,11 @@ class BeckersQVpy(MosModelBase, BulkModel):
 
         # these are kinda hard to calculate, precalculate and use just once
         phi_t = self.phi_t
-        psi_b = psi_b or self.psi_b
-        fb_ea = fb_ea or self.fb_ea()
+        if psi_b is None:
+            psi_b = self.psi_b
+        if fb_ea is None:
+            fb_ea = self.fb_ea()
+
         # exp_phi_t = self.exp_phi_t
         exp_phi_t = lambda a: np.exp(a / phi_t)
 
@@ -104,6 +107,11 @@ class BeckersQVpy(MosModelBase, BulkModel):
     def v_th(self):
         """ threshold voltage from full v_gb expression (psi_s = psi_th) """
         return self.v_gb(self.psi_th, 0.0)
+
+    def v_th_d(self, dpsi=None):
+        """ threshold voltage with a shift in psi """
+        dpsi = dpsi or np.sign(self.psi_th)*4*self.phi_t
+        return self.v_gb(self.psi_th + dpsi, 0.0)
 
     @property
     def v_th1(self):

@@ -511,7 +511,7 @@ class BulkModelTails(BulkModelFD):
         return self.C1_n * np.exp((E_f - self.E_cme) / self.W_TA) + \
                self.C2_n * np.exp((E_f - self.E_cme) / (k * self.temp))
 
-    n = n_approx2
+    n = n_approx
 
     def p_approx(self, E_f):
         from scipy.special import erfc, hyp2f1
@@ -567,4 +567,4 @@ class BulkModelTails(BulkModelFD):
         return self.C1_p * np.exp((self.E_vme - E_f) / self.W_TD) + \
                self.C2_p * np.exp((self.E_vme - E_f) / (k * self.temp))
 
-    p = p_approx2
+    p = p_approx
